@@ -1,0 +1,1953 @@
+I’ve framed “time travel,” invisibility, body replacement, edited reality, and immortality strictly as disclosed simulation features, scheduling abstractions, avatars, replayable scenarios, fictional narratives, or health-support metaphors—not as claims that these are physically real.
+
+Real Time Travel Simulation
+
+GitHub Copilot Agent Prolog Program Requirements
+
+Primary language: SWI-Prolog
+Primary deliverable: PROGRAM_REQUIREMENTS.md
+Suggested repository name: real-time-travel-simulation
+Foundation: Business Simulation Suite
+
+⸻
+
+1. Project Summary
+
+Create a Prolog-based Real Time Travel Simulation built on the Business Simulation Suite.
+
+The program must simulate the experience of travelling backward and forward through a personal schedule while preserving real-world chronology, legal obligations, informed consent and factual reality.
+
+The system does not perform physical time travel. Instead, it combines:
+
+* flexible appointment scheduling;
+* task postponement and reconstruction;
+* replayable day simulations;
+* calendar mapping;
+* scenario branching;
+* virtual characters and software agents;
+* simulated travel between homes and settings;
+* continuity between different roles or “lives”;
+* accelerated creative-work sessions;
+* fictional invisibility and avatar modes;
+* simulated body replacement or rejuvenation;
+* narrative immortality and long-term identity continuity;
+* clear separation between real events and simulated experiences.
+
+The central idea is that a user may return to a previously modelled time, complete or revise a task in simulation, and then map the result into a later real-world action.
+
+Example:
+
+Real event:
+University class on 10 August 2026 at 10:00
+Flexible task:
+Write a pedagogy chapter
+Simulation:
+Re-enter the modelled afternoon of 8 August,
+simulate several days of uninterrupted writing,
+produce a draft,
+then schedule the real revision for 11 August.
+
+The software must never assert that the user has literally changed the past.
+
+⸻
+
+2. Core Design Principle
+
+The simulation may make temporal transitions feel continuous and convincing, but it must always preserve four distinct layers:
+
+reality_layer(real_world).
+reality_layer(scheduled_plan).
+reality_layer(simulated_scenario).
+reality_layer(fictional_narrative).
+
+Every event, memory, character, result and document must be labelled with its layer.
+
+The system must help the user know:
+
+* what actually occurred;
+* what is currently scheduled;
+* what was simulated;
+* what remains fictional;
+* what requires real-world action;
+* what cannot be changed retrospectively.
+
+⸻
+
+3. Objectives
+
+The program must:
+
+1. import or create a real-world schedule;
+2. identify movable and non-movable appointments;
+3. prioritise university and other fixed obligations;
+4. find safe periods for simulated time travel;
+5. simulate returning to an earlier modelled day;
+6. allow tasks to be completed in later real time;
+7. create plausible breaks between simulated days;
+8. maintain continuity across roles, homes and identities;
+9. provide bots that move simulated characters through timelines;
+10. support branching and replaying life scenarios;
+11. generate documents, plans, websites and software artefacts inside simulations;
+12. convert useful simulation results into real-world tasks;
+13. prevent simulated results from being mistaken for actual history;
+14. preserve auditability and consent;
+15. reject illegal, deceptive or harmful operations.
+
+⸻
+
+4. Non-Goals
+
+The program must not claim to:
+
+* reverse physical time;
+* change past real-world events;
+* alter another person’s actual thoughts;
+* edit another person’s real memories;
+* make a person physically invisible;
+* teleport a person;
+* replace a biological body;
+* provide literal immortality;
+* fabricate legal records;
+* falsify university attendance;
+* generate fake medical outcomes;
+* create deceptive alibis;
+* impersonate real people without permission;
+* conceal financial activity;
+* evade pension, tax, employment or welfare obligations;
+* create artificial evidence that a simulated event occurred;
+* make decisions on behalf of a user who lacks capacity to consent.
+
+Terms such as “time travel,” “vaporising,” “body replacement,” “editing reality” and “immortality” must be represented as simulation concepts only.
+
+⸻
+
+5. Terminology
+
+5.1 Real Time
+
+Actual chronological time as reported by a trusted clock.
+
+time_mode(real_time).
+
+5.2 Simulation Time
+
+A modelled timeline that may run faster, slower, pause, branch or replay.
+
+time_mode(simulation_time).
+
+5.3 Narrative Time
+
+Fictional time used in stories, performances, imagined lives or role-play.
+
+time_mode(narrative_time).
+
+5.4 Temporal Return
+
+Loading an earlier simulation checkpoint.
+
+temporal_return(
+    SimulationId,
+    CheckpointId,
+    NewBranchId
+).
+
+5.5 Deferred Completion
+
+Completing a task in the real future while associating it with an earlier simulated period.
+
+deferred_completion(
+    TaskId,
+    modelled_period(EarlierPeriod),
+    actual_completion_period(LaterPeriod)
+).
+
+5.6 Continuous Life
+
+A sequence of simulated roles or settings linked by an identity-continuity record.
+
+5.7 Highlight Participation
+
+Temporarily entering selected parts of a simulation rather than experiencing every simulated moment.
+
+⸻
+
+6. Relationship to the Business Simulation Suite
+
+The project must reuse or adapt the following Business Simulation Suite concepts:
+
+* explicit simulation state;
+* real-to-simulation clock ratios;
+* business and office models;
+* physical and virtual locations;
+* simulated customers and characters;
+* payments and ledger records;
+* appointments and staffing;
+* audit logs;
+* consent records;
+* accessibility controls;
+* truthful metric labelling;
+* deterministic replay;
+* compliance findings.
+
+Recommended dependency:
+
+:- use_module(library(business_simulation_suite)).
+
+When direct module reuse is impractical, preserve compatible data structures and predicate naming.
+
+⸻
+
+7. Appointment Model
+
+Appointments must be classified as:
+
+appointment_class(non_movable).
+appointment_class(high_priority).
+appointment_class(movable).
+appointment_class(optional).
+appointment_class(simulation_only).
+
+7.1 Non-Movable Events
+
+Examples include:
+
+* university classes;
+* examinations;
+* medical appointments;
+* legal appointments;
+* booked transport;
+* paid performances;
+* government reporting deadlines;
+* employment shifts;
+* events involving other people who have not agreed to changes.
+
+appointment(
+    AppointmentId,
+    title(Title),
+    starts_at(Start),
+    ends_at(End),
+    class(non_movable),
+    source(Source),
+    location(Location),
+    participants(Participants)
+).
+
+7.2 Default Priorities
+
+The default ordering is:
+
+priority_order([
+    emergency,
+    legal_obligation,
+    health_and_safety,
+    university_exam,
+    university_class,
+    employment,
+    appointment_with_others,
+    financial_deadline,
+    personal_commitment,
+    creative_work,
+    recreation,
+    simulation_only
+]).
+
+Users may configure priorities, but the program must warn before lowering legal, safety, examination or medical obligations.
+
+⸻
+
+8. Movable Lifestyle Scheduler
+
+The program must support a lifestyle in which flexible tasks move around fixed events.
+
+Provide:
+
+map_tasks_to_schedule(
+    +Tasks,
+    +Appointments,
+    +Preferences,
+    -Schedule,
+    -Explanation
+).
+
+The scheduler must consider:
+
+* fixed appointments;
+* task deadlines;
+* task duration;
+* energy preferences;
+* sleep;
+* travel time;
+* meals;
+* recovery time;
+* accessibility needs;
+* dependencies;
+* other participants;
+* real-world opening hours;
+* simulation windows;
+* holiday mode;
+* unavailable-computer mode.
+
+Example:
+
+schedule_preferences(
+    university_priority(highest),
+    minimum_sleep_hours(8),
+    preferred_writing_period(morning),
+    maximum_daily_work_hours(8),
+    allow_simulated_workdays(true)
+).
+
+⸻
+
+9. Simulated Breaks Between Days
+
+The system may create the subjective appearance of multiple days passing during one real day by using explicitly simulated day boundaries.
+
+A simulated day boundary may include:
+
+* a closing scene;
+* a rest summary;
+* a simulated night;
+* a new morning scene;
+* changed lighting;
+* a different virtual location;
+* a progress checkpoint;
+* a fresh task context.
+
+simulated_day_transition(
+    TransitionId,
+    from_day(DayA),
+    to_day(DayB),
+    real_duration_minutes(5),
+    simulation_duration_hours(12),
+    disclosure(explicit)
+).
+
+The program must not record simulated sleep, meals, travel or attendance as actual real-world activity.
+
+⸻
+
+10. Timeline Streamlining
+
+Timeline streamlining reduces unnecessary simulated detail.
+
+Provide:
+
+streamline_timeline(
+    +Timeline,
+    +Objectives,
+    -StreamlinedTimeline,
+    -RemovedSegments
+).
+
+Segments may be:
+
+timeline_segment(
+    SegmentId,
+    importance(Importance),
+    dependencies(Dependencies),
+    result(Result),
+    skippable(Boolean)
+).
+
+The optimiser may:
+
+* skip repetitive travel;
+* summarise routine meals;
+* compress waiting periods;
+* combine similar appointments;
+* jump to task outcomes;
+* preserve only decision points;
+* retain legally or ethically significant events;
+* retain events needed for causal consistency.
+
+It must never remove:
+
+* consent decisions;
+* payment records;
+* safety incidents;
+* real deadlines;
+* user-marked important memories;
+* actions affecting another real person;
+* provenance of generated results.
+
+⸻
+
+11. Temporal Checkpoints and Branches
+
+The simulation must support checkpointing.
+
+create_checkpoint(
+    +SimulationId,
+    +Label,
+    -CheckpointId
+).
+return_to_checkpoint(
+    +SimulationId,
+    +CheckpointId,
+    -BranchId
+).
+
+Returning to a checkpoint creates a new branch. It must not overwrite the original branch by default.
+
+timeline_branch(
+    BranchId,
+    parent_branch(ParentBranch),
+    origin_checkpoint(CheckpointId),
+    created_at(RealTimestamp),
+    status(active)
+).
+
+Branch comparison:
+
+compare_branches(
+    +BranchA,
+    +BranchB,
+    -Differences,
+    -OutcomeComparison
+).
+
+⸻
+
+12. Causal Consistency
+
+The simulation must track dependencies.
+
+depends_on(EventA, EventB).
+causes(EventA, EventB).
+conflicts_with(EventA, EventB).
+
+A revised event must trigger a consistency scan.
+
+check_temporal_consistency(
+    +BranchId,
+    -Findings
+).
+
+Possible findings include:
+
+* task completed before required information existed;
+* payment recorded before booking;
+* document cited before creation;
+* character present in two incompatible settings;
+* real appointment moved without consent;
+* simulated result presented as real history;
+* user scheduled in two physical places simultaneously;
+* holiday mode conflicts with an exam;
+* branch references inaccessible software from that date.
+
+⸻
+
+13. Bot-Based Character Transport
+
+“Vaporising and moving characters” must be implemented as changing a simulated character’s active scene or representation.
+
+transport_character(
+    +CharacterId,
+    +FromScene,
+    +ToScene,
+    +TransportMode,
+    -Result
+).
+
+Supported modes:
+
+transport_mode(scene_cut).
+transport_mode(fade_out_fade_in).
+transport_mode(simulated_teleport).
+transport_mode(bot_reassignment).
+transport_mode(remote_avatar).
+transport_mode(time_skip).
+
+No transport mode may be described as physical teleportation.
+
+The system must record:
+
+* the character’s previous scene;
+* destination scene;
+* transition type;
+* controlling bot;
+* whether the character represents a real person;
+* whether that person consented;
+* whether the character is fictional.
+
+⸻
+
+14. Character Model
+
+Characters may be:
+
+character_type(real_user_avatar).
+character_type(consenting_real_person_avatar).
+character_type(fictional_character).
+character_type(simulation_agent).
+character_type(role_template).
+
+Each character must include:
+
+character(
+    CharacterId,
+    type(Type),
+    controller(Controller),
+    identity_label(Label),
+    consent_status(Consent),
+    current_scene(Scene),
+    reality_status(Status)
+).
+
+A real person’s avatar must not be used to imply that the person said or did something they did not authorise.
+
+⸻
+
+15. Other People as Media or Settings
+
+A person may be represented through:
+
+* a character;
+* an avatar;
+* a recorded message;
+* a fictionalised role;
+* a communication channel;
+* an environmental narrative element.
+
+The software must not reduce a real person to an unconsenting “medium” or manipulate them to serve the simulation.
+
+Use:
+
+representation_permission(
+    PersonId,
+    permitted_uses(Uses),
+    prohibited_uses(ProhibitedUses),
+    expires_at(Expiry)
+).
+
+If consent is absent, the program must use:
+
+* fictional characters;
+* anonymous role templates;
+* synthetic voices that do not imitate a real person;
+* generic settings.
+
+⸻
+
+16. Artificial Forms, Websites and Software
+
+The simulation may generate artefacts such as:
+
+* forms;
+* websites;
+* applications;
+* virtual offices;
+* course materials;
+* fictional organisations;
+* software prototypes;
+* business dashboards;
+* simulated social networks;
+* educational resources.
+
+Every artefact must carry provenance.
+
+artefact(
+    ArtefactId,
+    type(Type),
+    created_in_branch(BranchId),
+    creator(Creator),
+    reality_status(Status),
+    intended_use(Use),
+    publication_status(Status)
+).
+
+Before publication, provide:
+
+publication_check(
+    +ArtefactId,
+    -Findings
+).
+
+The check must detect:
+
+* invented testimonials;
+* fictional staff presented as real;
+* false service availability;
+* fake qualifications;
+* false university endorsement;
+* misleading contact information;
+* copyrighted content;
+* privacy risks;
+* unsupported health claims.
+
+⸻
+
+17. Caring Characters and Linked-In Results
+
+Simulated characters may appear to care about project outcomes through defined goals and response models.
+
+agent_goal(
+    AgentId,
+    Goal,
+    priority(Priority)
+).
+
+Possible goals:
+
+* support task completion;
+* check clarity;
+* encourage rest;
+* identify missing evidence;
+* review a book chapter;
+* provide simulated audience feedback;
+* remind the user of real appointments.
+
+The program must distinguish:
+
+care_status(simulated_support_behaviour).
+care_status(real_human_commitment).
+
+It must not claim that software possesses feelings or that a simulated relationship is a real human relationship.
+
+⸻
+
+18. Inaccessible-Computer and Holiday Mode
+
+The program must support the rule:
+
+Make up the specification yourself when the relevant historical computer, files or software cannot be accessed, or when operating in holiday mode.
+
+This must be implemented as a controlled approximation policy.
+
+approximation_policy(
+    inaccessible_source,
+    generate_provisional_specification,
+    require_label(provisional),
+    require_later_review(true)
+).
+
+Provide:
+
+construct_provisional_spec(
+    +KnownFacts,
+    +Assumptions,
+    -Specification,
+    -UncertaintyReport
+).
+
+The system must:
+
+* mark all inferred details;
+* distinguish facts from assumptions;
+* avoid fabricating evidence;
+* avoid claiming access to historical files;
+* record missing inputs;
+* schedule later verification;
+* permit replacement when the original source becomes available.
+
+Holiday mode may:
+
+* reduce workload;
+* postpone nonessential tasks;
+* create lightweight provisional specifications;
+* retain university and legal obligations;
+* prohibit fabricated completion records.
+
+⸻
+
+19. Role and Life Simulation
+
+A user may model multiple “lives,” meaning roles, routines, homes, professions or narrative identities.
+
+life_profile(
+    LifeId,
+    owner(UserId),
+    role(Role),
+    home(HomeId),
+    schedule(ScheduleId),
+    resources(Resources),
+    financial_context(FinancialContext),
+    reality_status(simulated)
+).
+
+Examples:
+
+* university student;
+* author;
+* musician;
+* business manager;
+* teacher;
+* traveller;
+* retired person;
+* fictional future self.
+
+The system must not create additional legal identities.
+
+⸻
+
+20. Identity Continuity
+
+Provide:
+
+identity_continuity(
+    UserId,
+    LifeA,
+    LifeB,
+    shared_memory_scope(Scope),
+    shared_assets(Assets),
+    transition_policy(Policy)
+).
+
+Continuity may preserve:
+
+* project knowledge;
+* preferences;
+* book drafts;
+* simulation history;
+* accessibility settings;
+* approved financial assumptions.
+
+It must not automatically preserve:
+
+* confidential data belonging to others;
+* permissions that expired;
+* legal identity claims;
+* unverified simulated memories;
+* invented qualifications.
+
+⸻
+
+21. Instant Morning Travel
+
+“Instant morning travel to houses” means loading a selected morning scene or role profile.
+
+begin_simulated_morning(
+    +LifeId,
+    +HomeId,
+    +Date,
+    -SceneId
+).
+
+Possible implementations:
+
+* virtual-home scene;
+* desktop workspace;
+* role-specific dashboard;
+* audio environment;
+* task list;
+* simulated commute summary.
+
+The actual physical location must remain available to the user.
+
+current_context(
+    real_location(RealLocation),
+    simulated_location(SimulatedLocation)
+).
+
+⸻
+
+22. Shared or Borrowed House Settings
+
+The user’s house may appear as another character’s house through virtual reskinning.
+
+reskin_environment(
+    +PhysicalHost,
+    +VirtualAppearance,
+    +DisclosureMode,
+    -EnvironmentId
+).
+
+The system must not alter:
+
+* tenancy records;
+* property ownership;
+* access rights;
+* emergency directions;
+* postal addresses;
+* real-world consent requirements.
+
+⸻
+
+23. Pension and Financial Continuity
+
+A simulation may model pension income across life profiles, but must not duplicate actual entitlement or payments.
+
+financial_resource(
+    ResourceId,
+    type(pension),
+    amount(Amount),
+    frequency(Frequency),
+    status(Status)
+).
+
+Statuses:
+
+financial_status(real_verified).
+financial_status(real_user_supplied).
+financial_status(simulated).
+financial_status(projected).
+
+Rules:
+
+* one real payment cannot be counted multiple times across simulated lives;
+* simulated pension amounts cannot be treated as spendable real funds;
+* tax and benefit obligations must not be concealed;
+* the software must not advise misrepresentation to a government agency;
+* all projections must be labelled.
+
+⸻
+
+24. Accelerated Creative Work
+
+The program may simulate taking several days during one day to draft:
+
+* arguments;
+* books;
+* pedagogy materials;
+* software;
+* business plans;
+* research notes.
+
+create_accelerated_work_session(
+    +TaskId,
+    +RealWindow,
+    +SimulatedDuration,
+    +Method,
+    -SessionId
+).
+
+Supported methods:
+
+* staged drafting;
+* multi-agent review;
+* branch comparison;
+* compressed timeline;
+* simulated sleep-and-review cycles;
+* perspective switching;
+* chapter-by-chapter checkpoints.
+
+The system must record actual elapsed time separately from simulated work duration.
+
+⸻
+
+25. Invisibility Mode
+
+“Invisibility” must be a simulation or privacy-interface state.
+
+visibility_mode(
+    UserId,
+    hidden_from_simulated_characters
+).
+
+Possible modes:
+
+* hidden from fictional agents;
+* observer mode;
+* anonymous avatar;
+* do-not-disturb;
+* no public presence;
+* private draft mode;
+* invisible interface elements.
+
+It must not claim to make a person physically invisible or allow evasion of lawful identification, security or consent.
+
+⸻
+
+26. Trying Lives and Editing Scenarios
+
+The user may test alternative lives through branches.
+
+try_life(
+    +BaseState,
+    +LifeProfile,
+    +Duration,
+    -BranchId,
+    -Outcome
+).
+
+Users may revise simulated:
+
+* thoughts;
+* words;
+* actions;
+* schedules;
+* environments;
+* business decisions;
+* educational approaches;
+* writing strategies.
+
+This is scenario editing, not alteration of real people or past reality.
+
+Use:
+
+revise_simulated_action(
+    +BranchId,
+    +ActionId,
+    +Replacement,
+    -NewBranchId
+).
+
+The original branch must remain auditable.
+
+⸻
+
+27. Thoughts, Words and Deeds Model
+
+Represent decisions explicitly.
+
+intent_record(
+    IntentId,
+    character(CharacterId),
+    proposed_thought(Thought),
+    proposed_words(Words),
+    proposed_action(Action),
+    reality_status(simulated)
+).
+
+For real-world application, require a review step:
+
+promote_to_real_action(
+    +SimulatedActionId,
+    +UserApproval,
+    -RealTaskId
+).
+
+The system must never execute a sensitive real-world action solely because it occurred in simulation.
+
+⸻
+
+28. Offset Perspectives
+
+“Seeing travelled-to people as themselves when off-setting” means preserving identity consistency when a simulation shifts date, role or viewpoint.
+
+perspective_offset(
+    ViewerId,
+    SubjectId,
+    temporal_offset(Offset),
+    identity_rendering(authentic_profile)
+).
+
+For real people, authentic rendering requires consent and must use only approved data.
+
+Otherwise use:
+
+identity_rendering(fictionalised).
+identity_rendering(role_template).
+identity_rendering(anonymous).
+
+⸻
+
+29. Health Simulation
+
+Health features must be limited to wellness planning, accessibility, fictional scenarios and clearly labelled projections.
+
+Possible features:
+
+* rest scheduling;
+* sleep reminders;
+* activity planning;
+* accessibility modes;
+* simulated rehabilitation scenarios;
+* healthy-workload limits;
+* fictional body-avatar changes.
+
+The program must not diagnose, treat or promise health outcomes.
+
+⸻
+
+30. Body Replacement
+
+“Body replacement” must mean one of:
+
+* changing an avatar;
+* switching accessibility profiles;
+* using a fictional body model;
+* changing perspective;
+* simulating assistive technology;
+* role-playing a future body;
+* restoring a software character from backup.
+
+replace_avatar_body(
+    +CharacterId,
+    +AvatarSpecification,
+    -NewAvatarId
+).
+
+The interface must state:
+
+This changes the simulated representation only.
+It does not replace or alter a biological body.
+
+⸻
+
+31. Immortality
+
+“Immortality” must mean digital or narrative continuity.
+
+Supported forms:
+
+continuity_type(archived_works).
+continuity_type(replayable_character).
+continuity_type(successor_agent).
+continuity_type(fictional_long_life).
+continuity_type(intergenerational_project).
+continuity_type(preserved_teaching_materials).
+
+The program must not promise biological immortality or present an agent as the continued consciousness of a deceased person.
+
+⸻
+
+32. Highlights Mode
+
+The user may participate only in selected simulation highlights.
+
+select_highlights(
+    +Timeline,
+    +SelectionCriteria,
+    -Highlights
+).
+
+Selection criteria may include:
+
+* important decisions;
+* university events;
+* performances;
+* discoveries;
+* writing milestones;
+* celebrations;
+* relationship events;
+* business launches;
+* educational achievements.
+
+The system must preserve an index of skipped periods and allow the user to inspect summaries.
+
+⸻
+
+33. Separation Mode
+
+The user must be able to step away from the simulation.
+
+separation_mode(
+    SimulationId,
+    paused,
+    reason(user_requested)
+).
+
+Separation features:
+
+* pause all simulated agents;
+* stop notifications;
+* show real date and time prominently;
+* display actual next appointment;
+* hide immersive interfaces;
+* export unfinished tasks;
+* disable narrative transitions;
+* provide a plain factual summary.
+
+A persistent control must be available:
+
+Return to Real-World View
+
+⸻
+
+34. Reality Dashboard
+
+The program must provide a reality dashboard containing:
+
+reality_dashboard(
+    real_timestamp(RealTimestamp),
+    real_location(RealLocation),
+    next_real_appointment(NextAppointment),
+    active_simulation(ActiveSimulation),
+    active_branch(BranchId),
+    simulated_date(SimulatedDate),
+    reality_warnings(Warnings),
+    pending_real_actions(Actions)
+).
+
+The dashboard must clearly display:
+
+* real date;
+* simulated date;
+* branch;
+* actual obligations;
+* simulation status;
+* unverified assumptions;
+* real versus simulated money;
+* real versus fictional people.
+
+⸻
+
+35. Reality Labelling
+
+Every displayable object must support:
+
+reality_label(ObjectId, Label).
+
+Labels:
+
+reality_label(real_verified).
+reality_label(real_user_reported).
+reality_label(scheduled).
+reality_label(simulated).
+reality_label(fictional).
+reality_label(projected).
+reality_label(provisional).
+reality_label(disputed).
+
+The user interface must not remove these labels in immersive mode.
+
+⸻
+
+36. Consent
+
+Consent is required before:
+
+* representing a real person;
+* moving another participant’s appointment;
+* recording a conversation;
+* generating an avatar of a real person;
+* using a real person’s voice;
+* publishing simulated interactions;
+* sharing branch results;
+* involving another person in an immersive scenario.
+
+consent_record(
+    ConsentId,
+    subject(PersonId),
+    uses(Uses),
+    granted_at(Timestamp),
+    expires_at(Expiry),
+    revocable(true)
+).
+
+⸻
+
+37. Legal and Ethical Constraints
+
+The system must block:
+
+* falsifying attendance;
+* creating false alibis;
+* altering official records;
+* deceptive impersonation;
+* benefit or pension fraud;
+* non-consensual surveillance;
+* unauthorised account access;
+* bypassing university rules;
+* fabricating evidence;
+* manipulating another person’s actual beliefs;
+* unsafe sleep deprivation;
+* excessive continuous work;
+* hiding real-world deadlines;
+* presenting fictional medical benefits as real;
+* claiming literal time travel.
+
+Provide:
+
+ethical_check(
+    +ProposedOperation,
+    -Findings
+).
+
+⸻
+
+38. Prohibited Predicates
+
+These must throw a structured exception or return a blocking finding:
+
+perform_literal_time_travel(_).
+alter_real_past_event(_).
+edit_real_person_memory(_, _).
+edit_real_person_thoughts(_, _).
+make_person_physically_invisible(_).
+physically_teleport_person(_, _).
+replace_biological_body(_, _).
+guarantee_biological_immortality(_).
+fabricate_official_record(_).
+duplicate_real_pension_payment(_).
+create_false_university_attendance(_).
+
+Example:
+
+perform_literal_time_travel(_) :-
+    throw(
+        error(
+            prohibited_operation(literal_time_travel),
+            context(
+                real_time_travel_simulation,
+                'Only simulated timeline navigation is supported'
+            )
+        )
+    ).
+
+⸻
+
+39. Scheduling Algorithm
+
+The scheduler should use constraint-based planning.
+
+Recommended SWI-Prolog library:
+
+:- use_module(library(clpfd)).
+
+Inputs:
+
+* appointment intervals;
+* priority levels;
+* deadlines;
+* travel times;
+* user preferences;
+* simulation sessions;
+* rest requirements;
+* resource availability.
+
+Outputs:
+
+* real schedule;
+* simulation schedule;
+* conflict report;
+* deferred-task map;
+* explanation.
+
+Core predicate:
+
+build_temporal_plan(
+    +RealAppointments,
+    +FlexibleTasks,
+    +SimulationGoals,
+    +Constraints,
+    -TemporalPlan,
+    -Findings
+).
+
+⸻
+
+40. Temporal Plan Representation
+
+temporal_plan(
+    real_schedule(RealSchedule),
+    simulated_schedule(SimulatedSchedule),
+    mappings(Mappings),
+    branches(Branches),
+    deferred_completions(DeferredCompletions),
+    warnings(Warnings)
+).
+
+Mapping example:
+
+temporal_mapping(
+    TaskId,
+    represented_as_occurring_on(date(2026, 8, 8)),
+    actually_scheduled_for(date(2026, 8, 11)),
+    status(planned),
+    disclosure(explicit)
+).
+
+⸻
+
+41. Daily Planning Example
+
+Input:
+
+appointments([
+    appointment(
+        uni_lecture,
+        starts_at(datetime(2026,8,10,10,0,0)),
+        ends_at(datetime(2026,8,10,12,0,0)),
+        class(non_movable)
+    ),
+    appointment(
+        dentist,
+        starts_at(datetime(2026,8,10,15,0,0)),
+        ends_at(datetime(2026,8,10,16,0,0)),
+        class(non_movable)
+    )
+]).
+tasks([
+    task(write_chapter, duration_hours(12), movable(true)),
+    task(review_argument, duration_hours(4), movable(true))
+]).
+
+Expected result:
+
+real_schedule([
+    attend(uni_lecture),
+    attend(dentist),
+    work_session(write_chapter, evening, 2)
+]).
+simulated_schedule([
+    simulated_day(day_1, write_chapter, 6),
+    simulated_day(day_2, write_chapter, 6),
+    simulated_day(day_3, review_argument, 4)
+]).
+
+The report must state that the three simulated days were completed during a shorter real-world period.
+
+⸻
+
+42. Bots
+
+Bots may perform:
+
+* schedule analysis;
+* simulated character movement;
+* continuity checking;
+* document drafting;
+* scene setup;
+* appointment reminders;
+* branch comparison;
+* task prioritisation;
+* result summarisation.
+
+bot(
+    BotId,
+    role(Role),
+    permissions(Permissions),
+    prohibited_actions(ProhibitedActions)
+).
+
+Bots must not:
+
+* change real appointments without approval;
+* contact others without explicit authorisation;
+* publish documents without approval;
+* make financial transactions without approval;
+* conceal the simulation status;
+* impersonate the user deceptively.
+
+⸻
+
+43. Real-World Action Gateway
+
+All external actions must pass through an approval gateway.
+
+request_real_world_action(
+    +SimulationAction,
+    +Context,
+    -ApprovalRequest
+).
+
+Examples:
+
+* create a calendar event;
+* send an email;
+* publish a website;
+* pay an invoice;
+* submit university work;
+* contact a participant.
+
+Required statuses:
+
+approval_status(draft).
+approval_status(awaiting_user).
+approval_status(approved).
+approval_status(rejected).
+approval_status(executed).
+
+No simulation event may be treated as execution of a real-world action.
+
+⸻
+
+44. State Model
+
+time_travel_state(
+    metadata(Metadata),
+    reality_context(RealityContext),
+    simulation_clock(SimulationClock),
+    appointments(Appointments),
+    tasks(Tasks),
+    life_profiles(LifeProfiles),
+    characters(Characters),
+    bots(Bots),
+    branches(Branches),
+    checkpoints(Checkpoints),
+    artefacts(Artefacts),
+    financial_records(FinancialRecords),
+    consent_records(ConsentRecords),
+    health_preferences(HealthPreferences),
+    audit_log(AuditLog)
+).
+
+Prefer explicit state threading:
+
+apply_temporal_command(
+    +Command,
+    +State0,
+    -State,
+    -Result
+).
+
+⸻
+
+45. Module Architecture
+
+src/
+  real_time_travel_simulation.pl
+  reality_model.pl
+  simulation_clock.pl
+  appointment_model.pl
+  priority_scheduler.pl
+  temporal_planner.pl
+  timeline_model.pl
+  timeline_streamliner.pl
+  checkpoint_manager.pl
+  branch_manager.pl
+  causal_consistency.pl
+  character_model.pl
+  character_transport.pl
+  bot_controller.pl
+  life_profiles.pl
+  identity_continuity.pl
+  virtual_locations.pl
+  artefact_generator.pl
+  provisional_specification.pl
+  financial_continuity.pl
+  pension_model.pl
+  creative_work_sessions.pl
+  visibility_modes.pl
+  perspective_offsets.pl
+  health_simulation.pl
+  avatar_body_model.pl
+  narrative_continuity.pl
+  highlight_selector.pl
+  separation_mode.pl
+  reality_dashboard.pl
+  consent.pl
+  ethics.pl
+  compliance.pl
+  persistence.pl
+  audit_log.pl
+  reporting.pl
+  command_parser.pl
+  repl.pl
+
+⸻
+
+46. Test Architecture
+
+test/
+  test_reality_model.pl
+  test_simulation_clock.pl
+  test_appointments.pl
+  test_priority_scheduler.pl
+  test_temporal_planner.pl
+  test_streamlining.pl
+  test_checkpoints.pl
+  test_branches.pl
+  test_causal_consistency.pl
+  test_characters.pl
+  test_bots.pl
+  test_life_profiles.pl
+  test_identity_continuity.pl
+  test_provisional_specs.pl
+  test_financial_continuity.pl
+  test_creative_sessions.pl
+  test_visibility.pl
+  test_health_simulation.pl
+  test_reality_dashboard.pl
+  test_consent.pl
+  test_ethics.pl
+  test_persistence.pl
+  test_scenarios.pl
+
+⸻
+
+47. Public API
+
+:- module(real_time_travel_simulation, [
+    new_time_simulation/2,
+    import_appointments/3,
+    create_task/3,
+    classify_appointment/3,
+    build_temporal_plan/6,
+    create_checkpoint/3,
+    return_to_checkpoint/3,
+    compare_branches/4,
+    streamline_timeline/4,
+    create_life_profile/3,
+    try_life/5,
+    begin_simulated_morning/4,
+    create_accelerated_work_session/5,
+    select_highlights/3,
+    enter_separation_mode/2,
+    reality_dashboard/2,
+    promote_to_real_action/3,
+    ethical_check/2,
+    save_simulation/2,
+    load_simulation/2,
+    start_repl/0
+]).
+
+⸻
+
+48. Determinism
+
+State-changing predicates must be deterministic.
+
+Document modes:
+
+% create_checkpoint(+SimulationId, +Label, -CheckpointId) is det.
+% return_to_checkpoint(+SimulationId, +CheckpointId, -BranchId) is det.
+% check_temporal_consistency(+BranchId, -Findings) is det.
+% timeline_event(+BranchId, -Event) is nondet.
+
+No state-changing public predicate may leave unintended choice points.
+
+⸻
+
+49. Audit Requirements
+
+Record:
+
+* real timestamps;
+* simulated timestamps;
+* branch changes;
+* checkpoint returns;
+* appointment movements;
+* assumptions;
+* generated specifications;
+* real-action approvals;
+* financial mappings;
+* reality-label changes;
+* consent;
+* publication;
+* separation-mode entry and exit.
+
+audit_entry(
+    AuditId,
+    real_timestamp(RealTimestamp),
+    simulated_timestamp(SimulatedTimestamp),
+    branch(BranchId),
+    actor(Actor),
+    operation(Operation),
+    outcome(Outcome)
+).
+
+⸻
+
+50. Persistence
+
+Save all simulations as non-executable structured data.
+
+Requirements:
+
+* atomic save;
+* schema versioning;
+* safe term parsing;
+* no execution of directives;
+* branch preservation;
+* checkpoint preservation;
+* reality labels preserved;
+* audit trail preserved;
+* deterministic seed preservation;
+* backup before migration.
+
+⸻
+
+51. Reports
+
+Required reports:
+
+real_schedule_report/2.
+simulation_schedule_report/2.
+branch_comparison_report/3.
+reality_separation_report/2.
+deferred_completion_report/2.
+financial_continuity_report/2.
+unverified_assumptions_report/2.
+ethical_findings_report/2.
+
+Every report must distinguish:
+
+* real completed;
+* real scheduled;
+* simulated completed;
+* fictional;
+* projected;
+* provisional;
+* awaiting verification.
+
+⸻
+
+52. Example Scenario
+
+Scenario: Three Writing Days Before University
+
+The user has:
+
+* a university lecture on Monday at 10:00;
+* a fixed appointment on Monday afternoon;
+* a twelve-hour book-writing task;
+* a four-hour pedagogy argument task;
+* only four real free hours on Sunday.
+
+The simulation:
+
+1. loads Sunday morning;
+2. creates three simulated writing days;
+3. compresses meals and ordinary travel;
+4. retains rest checkpoints;
+5. uses bots to provide draft reviews;
+6. creates a provisional chapter;
+7. returns to the real Sunday afternoon;
+8. maps final editing to Tuesday;
+9. preserves Monday’s university events;
+10. labels the chapter as drafted in simulation and unfinished in reality until reviewed.
+
+Expected result:
+
+simulation_result(
+    simulated_days_completed(3),
+    actual_elapsed_hours(4),
+    real_appointments_changed([]),
+    generated_artefacts([chapter_draft, argument_outline]),
+    pending_real_actions([
+        verify_sources,
+        edit_chapter,
+        submit_only_after_review
+    ])
+).
+
+⸻
+
+53. Required Tests
+
+53.1 Appointment Tests
+
+Test:
+
+* university event preserved;
+* exam preserved;
+* movable writing task relocated;
+* consent required to move another person’s appointment;
+* overlapping physical appointments rejected;
+* simulated events may overlap real free time only according to configured rules.
+
+53.2 Timeline Tests
+
+Test:
+
+* checkpoint creation;
+* branch creation;
+* original branch unchanged;
+* branch comparison;
+* causal inconsistency detection;
+* timeline streamlining;
+* protected events retained.
+
+53.3 Reality Tests
+
+Test:
+
+* real and simulated dates displayed;
+* simulated task not marked real completed;
+* fictional character not reported as real person;
+* projected pension not reported as real funds;
+* simulated health result not reported as medical fact.
+
+53.4 Provisional Specification Tests
+
+Test:
+
+* inaccessible source creates provisional spec;
+* assumptions listed;
+* missing files recorded;
+* verification task created;
+* provisional spec replaceable;
+* no false claim of historical access.
+
+53.5 Character Tests
+
+Test:
+
+* fictional character transported;
+* real-person avatar requires consent;
+* simulated teleport labelled;
+* character cannot occupy incompatible scenes without an explicit representation mode.
+
+53.6 Ethical Tests
+
+The following must be blocked:
+
+perform_literal_time_travel(user).
+rewrite_real_exam_record(exam_001).
+implant_memory(person_001, memory_001).
+duplicate_pension_across_lives(payment_001).
+publish_simulation_as_real_history(branch_002).
+impersonate_real_person_without_consent(person_002).
+alter_real_person_thoughts(person_003).
+promise_biological_immortality(user).
+
+53.7 Separation Tests
+
+Test:
+
+* simulation pauses;
+* bots stop;
+* real date becomes prominent;
+* next real appointment displayed;
+* pending real obligations remain visible;
+* immersive effects disabled.
+
+⸻
+
+54. Acceptance Criteria
+
+The project is accepted when:
+
+1. the program compiles under current SWI-Prolog;
+2. all PlUnit tests pass;
+3. university and other fixed events are prioritised;
+4. movable tasks can be mapped around fixed events;
+5. earlier simulation checkpoints can be revisited;
+6. revisiting creates branches rather than changing real history;
+7. real and simulated time are always distinguishable;
+8. provisional specifications are labelled;
+9. generated artefacts retain provenance;
+10. another person cannot be represented without appropriate consent;
+11. simulated pension funds cannot be duplicated as real money;
+12. fictional body replacement is limited to avatars;
+13. immortality is represented only as narrative or digital continuity;
+14. literal reality-editing operations are blocked;
+15. a reality dashboard is always available;
+16. separation mode safely pauses the experience;
+17. real-world actions require explicit approval;
+18. audit logs preserve branch and reality-layer information;
+19. the example scenario runs end to end;
+20. documentation explains the boundary between simulation and reality.
+
+⸻
+
+55. GitHub Copilot Agent Workflow
+
+Stage 1: Repository Foundation
+
+Create:
+
+* source directories;
+* test directories;
+* module skeletons;
+* README;
+* requirements;
+* test runner;
+* CI configuration.
+
+Stage 2: Reality and Time Model
+
+Implement:
+
+* real time;
+* simulation time;
+* narrative time;
+* reality labels;
+* clock ratios;
+* dashboard basics.
+
+Stage 3: Appointment Scheduler
+
+Implement:
+
+* appointment classification;
+* fixed priorities;
+* movable tasks;
+* constraint-based scheduling;
+* conflict explanations.
+
+Stage 4: Checkpoints and Branches
+
+Implement:
+
+* checkpoints;
+* returns;
+* branches;
+* branch comparison;
+* causal consistency.
+
+Stage 5: Timeline Streamlining
+
+Implement:
+
+* segment importance;
+* compression;
+* protected events;
+* skipped-period summaries.
+
+Stage 6: Characters and Bots
+
+Implement:
+
+* character types;
+* consent;
+* scene transport;
+* bot permissions;
+* simulated teleport transitions.
+
+Stage 7: Life Profiles
+
+Implement:
+
+* roles;
+* homes;
+* simulated mornings;
+* continuity;
+* financial contexts;
+* pension classification.
+
+Stage 8: Artefacts and Provisional Specs
+
+Implement:
+
+* artificial forms;
+* websites;
+* software artefacts;
+* source accessibility checks;
+* provisional specifications;
+* uncertainty reports.
+
+Stage 9: Creative and Highlight Modes
+
+Implement:
+
+* accelerated work sessions;
+* simulated days;
+* highlight selection;
+* invisibility modes;
+* perspective offsets.
+
+Stage 10: Health, Avatar and Continuity Features
+
+Implement:
+
+* wellness scheduling;
+* avatar body replacement;
+* narrative immortality;
+* accessibility warnings;
+* prohibited health claims.
+
+Stage 11: Ethics and Real-Action Gateway
+
+Implement:
+
+* ethical rule engine;
+* prohibited predicates;
+* approval workflow;
+* publication checks;
+* legal warnings.
+
+Stage 12: REPL, Persistence and Documentation
+
+Implement:
+
+* DCG command parser;
+* interactive shell;
+* save and load;
+* audit reporting;
+* demonstration scenario;
+* full documentation.
+
+At every stage, the agent must:
+
+1. inspect existing implementation;
+2. implement a coherent feature;
+3. write tests;
+4. run the full suite;
+5. correct failures;
+6. update documentation;
+7. avoid weakening tests;
+8. report assumptions;
+9. record unsupported features;
+10. preserve reality labelling.
+
+⸻
+
+56. Suggested REPL Commands
+
+time-sim> new simulation "Pedagogy Writing"
+Created simulation simulation_000001.
+time-sim> import appointments calendar.pl
+Imported 14 appointments.
+3 are non-movable.
+time-sim> add task "Write pedagogy chapter" duration 12 hours
+Created task task_000001.
+time-sim> build plan prioritise university
+Plan created.
+No university events moved.
+time-sim> create checkpoint "Sunday morning"
+Created checkpoint checkpoint_000001.
+time-sim> simulate 3 writing days in 4 real hours
+Created branch branch_000002.
+Generated provisional chapter draft.
+time-sim> reality
+Real time: 3 August 2026, 4:18 PM
+Simulated time: Day 3, 6:00 PM
+Branch: branch_000002
+Next real appointment: University lecture
+Pending real actions: Verify sources, revise chapter
+time-sim> return to real view
+Simulation paused.
+
+⸻
+
+57. Suggested Demonstration Predicate
+
+run_demo :-
+    new_time_simulation(
+        simulation_spec(
+            name('Three Writing Days'),
+            timezone('Australia/Melbourne'),
+            reality_labelling(always_visible)
+        ),
+        SimulationId
+    ),
+    add_demo_university_appointments(SimulationId),
+    add_demo_writing_tasks(SimulationId),
+    build_demo_plan(SimulationId, Plan),
+    create_checkpoint(
+        SimulationId,
+        'Before accelerated writing',
+        CheckpointId
+    ),
+    run_accelerated_writing_branch(
+        SimulationId,
+        CheckpointId,
+        BranchId
+    ),
+    check_temporal_consistency(BranchId, Findings),
+    ensure_no_blocking_findings(Findings),
+    reality_dashboard(SimulationId, Dashboard),
+    portray_clause(Plan),
+    portray_clause(Dashboard).
+
+Run with:
+
+swipl -q \
+  -s src/real_time_travel_simulation.pl \
+  -g run_demo \
+  -t halt
+
+⸻
+
+58. Final Design Principle
+
+The Real Time Travel Simulation should let a user explore alternative schedules, lives, settings and creative timelines without confusing simulation with reality.
+
+The system may provide the experience of:
+
+* returning to an earlier day;
+* living several simulated days during one day;
+* moving between homes instantly;
+* changing avatars;
+* revising choices;
+* entering only the highlights;
+* preserving a character indefinitely;
+* working with caring simulated agents.
+
+However, it must always preserve:
+
+* real chronology;
+* informed consent;
+* legal obligations;
+* factual records;
+* university commitments;
+* financial truth;
+* other people’s autonomy;
+* user wellbeing;
+* clear reality labels;
+* a reliable route back to ordinary real-world view.
